@@ -45,4 +45,30 @@ class ExerciseRepository(
         }
 
     }
+
+    private fun getExerciseCollectionRef(workoutId: String) =
+        db.collection("exercises").document(workoutId).collection("exercises")
+
+
+
+    suspend fun updateExercise(workoutId: String, exercise: Exercise): ResultState<String> {
+        return try {
+            if (exercise.id.isEmpty()) {
+                return ResultState.Error("Exercise ID cannot be empty for update")
+            }
+            getExerciseCollectionRef(workoutId).document(exercise.id).set(exercise).await()
+            ResultState.Success("Exercise updated")
+        } catch (e: Exception) {
+            ResultState.Error(e.message ?: "Error to update exercise")
+        }
+    }
+
+    suspend fun deleteExercise(workoutId: String, exerciseId: String): ResultState<String> {
+        return try {
+            getExerciseCollectionRef(workoutId).document(exerciseId).delete().await()
+            ResultState.Success("Exercise deleted")
+        } catch (e: Exception) {
+            ResultState.Error(e.message ?: "Error to delete exercise")
+        }
+    }
 }

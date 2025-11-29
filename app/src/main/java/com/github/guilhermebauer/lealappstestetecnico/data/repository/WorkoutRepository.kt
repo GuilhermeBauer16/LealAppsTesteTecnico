@@ -22,7 +22,16 @@ class WorkoutRepository(
         }
     }
 
-    suspend fun listTraining(): ResultState<List<Workout>> {
+    suspend fun updateWorkout(workout: Workout): ResultState<String> {
+        return try {
+            workoutRef.document(workout.id).set(workout).await()
+            ResultState.Success("Workout updated")
+        } catch (e: Exception) {
+            ResultState.Error(e.message ?: "Error to update workout")
+        }
+    }
+
+    suspend fun listWorkout(): ResultState<List<Workout>> {
 
         return try {
 
