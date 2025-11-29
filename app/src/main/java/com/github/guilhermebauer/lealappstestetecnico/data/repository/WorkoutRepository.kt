@@ -15,7 +15,7 @@ class WorkoutRepository(
         return try {
             val doc = workoutRef.document()
             val newWorkout = workout.copy(id = doc.id)
-            doc.set(workout).await()
+            doc.set(newWorkout).await()
             ResultState.Success("Workout Created")
         } catch (e: Exception) {
             ResultState.Error(e.message ?: "Error to create workout")

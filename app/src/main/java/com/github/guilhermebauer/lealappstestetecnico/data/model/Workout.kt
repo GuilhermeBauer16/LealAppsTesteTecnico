@@ -1,11 +1,14 @@
 package com.github.guilhermebauer.lealappstestetecnico.data.model
 
-import com.google.firebase.Timestamp
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 
+
+@Parcelize
 data class Workout(
     val id: String = "",
     val name: String = "",
     val description: String = "",
-    val dataset: Timestamp = Timestamp.now(),
+    val dataset: Long = System.currentTimeMillis(),
 
-    )
+    ) : Parcelable

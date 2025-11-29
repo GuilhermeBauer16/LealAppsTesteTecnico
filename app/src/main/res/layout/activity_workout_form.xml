@@ -26,22 +26,6 @@
         app:titleTextAppearance="@style/TextAppearance.Material3.TitleLarge">
 
 
-        <!--        <com.google.android.material.textview.MaterialTextView-->
-
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-
-        <!--            android:theme="@sty"-->
-        <!--            android:text="New Task"-->
-        <!--            android:textAllCaps="true"-->
-        <!--            android:textColor="@android:color/black"-->
-        <!--            android:textSize="22sp"-->
-
-
-        <!--            >-->
-
-
-        <!--        </com.google.android.material.textview.MaterialTextView>-->
 
 
     </com.google.android.material.appbar.MaterialToolbar>

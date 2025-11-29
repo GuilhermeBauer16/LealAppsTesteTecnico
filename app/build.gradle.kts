@@ -2,7 +2,9 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    id("com.google.gms.google-services") version "4.4.2" apply false
+    id("com.google.gms.google-services")
+    id ("kotlin-parcelize")
+
 }
 
 android {
@@ -10,7 +12,7 @@ android {
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.github.guilhermebauer.lealappstestetecnico"
+        applicationId = "com.github.guilhermebauer.lealappstestetecnico.app"
         minSdk = 24
         targetSdk = 36
         versionCode = 1
@@ -79,5 +81,9 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.8.1")
 
     // Material Design
-    implementation("com.google.android.material:material:1.12.0")
+    implementation(libs.material.v1120)
+
+    val nav_version = "2.9.6"
+
+    implementation("androidx.navigation:navigation-compose:$nav_version")
 }
