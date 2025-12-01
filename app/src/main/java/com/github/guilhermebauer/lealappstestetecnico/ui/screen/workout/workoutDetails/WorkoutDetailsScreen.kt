@@ -1,4 +1,4 @@
-package com.github.guilhermebauer.lealappstestetecnico.ui.screen.workoutDetails
+package com.github.guilhermebauer.lealappstestetecnico.ui.screen.workout.workoutDetails
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box

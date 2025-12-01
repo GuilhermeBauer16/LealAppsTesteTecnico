@@ -1,4 +1,4 @@
-package com.github.guilhermebauer.lealappstestetecnico.ui.screen.workoutDetails
+package com.github.guilhermebauer.lealappstestetecnico.ui.screen.workout.workoutDetails
 
 import com.github.guilhermebauer.lealappstestetecnico.data.model.Exercise
 import com.github.guilhermebauer.lealappstestetecnico.data.model.Workout

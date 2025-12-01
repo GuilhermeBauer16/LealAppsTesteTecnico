@@ -2,11 +2,9 @@ package com.github.guilhermebauer.lealappstestetecnico.data.repository
 
 import com.github.guilhermebauer.lealappstestetecnico.data.model.Exercise
 import com.github.guilhermebauer.lealappstestetecnico.data.model.Workout
-import com.github.guilhermebauer.lealappstestetecnico.utils.ResultState
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import kotlinx.coroutines.channels.awaitClose
-
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
@@ -70,13 +68,15 @@ class WorkoutRepository(
         }
     }
 
-    suspend fun updateWorkout(workout: Workout): ResultState<String> {
-        return try {
-            workoutRef.document(workout.id).set(workout).await()
-            ResultState.Success("Workout updated")
-        } catch (e: Exception) {
-            ResultState.Error(e.message ?: "Error to update workout")
+    suspend fun updateWorkout(workout: Workout) = suspendCoroutine { continuation ->
+
+        workoutRef.document(workout.id).set(workout).addOnSuccessListener {
+            continuation.resume(Unit)
+        }.addOnFailureListener {
+
+            continuation.resumeWithException(it)
         }
+
     }
 
     suspend fun deleteWorkout(id: String) = suspendCoroutine { continuation ->

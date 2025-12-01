@@ -10,18 +10,21 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.github.guilhermebauer.lealappstestetecnico.ui.screen.addWorkout.NewWorkoutScreen
-import com.github.guilhermebauer.lealappstestetecnico.ui.screen.addWorkout.NewWorkoutScreenAction
-import com.github.guilhermebauer.lealappstestetecnico.ui.screen.addWorkout.NewWorkoutViewModel
 import com.github.guilhermebauer.lealappstestetecnico.ui.screen.main.MainScreen
 import com.github.guilhermebauer.lealappstestetecnico.ui.screen.main.MainScreenAction
 import com.github.guilhermebauer.lealappstestetecnico.ui.screen.main.MainScreenViewModel
 import com.github.guilhermebauer.lealappstestetecnico.ui.screen.newExercise.NewExerciseAction
 import com.github.guilhermebauer.lealappstestetecnico.ui.screen.newExercise.NewExerciseScreen
 import com.github.guilhermebauer.lealappstestetecnico.ui.screen.newExercise.NewExerciseViewModel
-import com.github.guilhermebauer.lealappstestetecnico.ui.screen.workoutDetails.WorkoutDetailsAction
-import com.github.guilhermebauer.lealappstestetecnico.ui.screen.workoutDetails.WorkoutDetailsScreen
-import com.github.guilhermebauer.lealappstestetecnico.ui.screen.workoutDetails.WorkoutDetailsViewModel
+import com.github.guilhermebauer.lealappstestetecnico.ui.screen.workout.addWorkout.NewWorkoutScreen
+import com.github.guilhermebauer.lealappstestetecnico.ui.screen.workout.addWorkout.NewWorkoutScreenAction
+import com.github.guilhermebauer.lealappstestetecnico.ui.screen.workout.addWorkout.NewWorkoutViewModel
+import com.github.guilhermebauer.lealappstestetecnico.ui.screen.workout.editWorkout.EditWorkoutAction
+import com.github.guilhermebauer.lealappstestetecnico.ui.screen.workout.editWorkout.EditWorkoutScreen
+import com.github.guilhermebauer.lealappstestetecnico.ui.screen.workout.editWorkout.EditWorkoutViewModel
+import com.github.guilhermebauer.lealappstestetecnico.ui.screen.workout.workoutDetails.WorkoutDetailsAction
+import com.github.guilhermebauer.lealappstestetecnico.ui.screen.workout.workoutDetails.WorkoutDetailsScreen
+import com.github.guilhermebauer.lealappstestetecnico.ui.screen.workout.workoutDetails.WorkoutDetailsViewModel
 
 @Composable
 fun MainNavHost() {
@@ -44,7 +47,6 @@ fun MainNavHost() {
 
                         navController.navigate("workoutDetails/${action.workoutId}")
                     }
-
 
 
                     else -> {
@@ -86,6 +88,11 @@ fun MainNavHost() {
             val viewModel = viewModel<WorkoutDetailsViewModel>()
             val state by viewModel.state.collectAsStateWithLifecycle()
 
+            LaunchedEffect(true) {
+                viewModel.refreshData()
+            }
+
+
             LaunchedEffect(state.isWorkoutDeleted) {
                 if (state.isWorkoutDeleted) {
                     navController.popBackStack()
@@ -107,6 +114,10 @@ fun MainNavHost() {
                             navController.navigate("newExercise/$workoutId")
                         }
 
+                    }
+
+                    is WorkoutDetailsAction.OnEditWorkoutClick -> {
+                        state.workout?.id?.let { navController.navigate("editWorkout/$it") }
                     }
 
 
@@ -144,7 +155,30 @@ fun MainNavHost() {
             }
         }
 
+        composable(
+            route = "editWorkout/{workoutId}",
+            arguments = listOf(navArgument("workoutId") { type = NavType.StringType })
+        ) {
+            val viewModel = viewModel<EditWorkoutViewModel>()
+            val state by viewModel.state.collectAsStateWithLifecycle()
 
 
+            LaunchedEffect(state.isWorkoutUpdated) {
+                if (state.isWorkoutUpdated) {
+                    navController.popBackStack()
+                }
+            }
+
+
+            EditWorkoutScreen(state = state) { action ->
+                if (action is EditWorkoutAction.NavigateBack) {
+                    navController.popBackStack()
+                } else {
+                    viewModel.onAction(action)
+                }
+            }
+
+
+        }
     }
 }

@@ -1,4 +1,4 @@
-package com.github.guilhermebauer.lealappstestetecnico.ui.screen.addWorkout
+package com.github.guilhermebauer.lealappstestetecnico.ui.screen.workout.addWorkout
 
 sealed interface NewWorkoutScreenAction {
 

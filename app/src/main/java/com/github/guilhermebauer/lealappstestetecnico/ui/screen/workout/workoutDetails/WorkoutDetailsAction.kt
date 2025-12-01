@@ -1,4 +1,4 @@
-package com.github.guilhermebauer.lealappstestetecnico.ui.screen.workoutDetails
+package com.github.guilhermebauer.lealappstestetecnico.ui.screen.workout.workoutDetails
 
 sealed interface WorkoutDetailsAction {
 

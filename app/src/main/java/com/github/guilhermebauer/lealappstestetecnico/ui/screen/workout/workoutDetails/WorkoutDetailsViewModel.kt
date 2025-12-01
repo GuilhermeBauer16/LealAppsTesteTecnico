@@ -1,10 +1,15 @@
-package com.github.guilhermebauer.lealappstestetecnico.ui.screen.workoutDetails
+package com.github.guilhermebauer.lealappstestetecnico.ui.screen.workout.workoutDetails
 
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.guilhermebauer.lealappstestetecnico.data.repository.ExerciseRepository
 import com.github.guilhermebauer.lealappstestetecnico.data.repository.WorkoutRepository
+import com.github.guilhermebauer.lealappstestetecnico.ui.screen.workout.editWorkout.EditWorkoutScreen
+import com.github.guilhermebauer.lealappstestetecnico.ui.screen.workout.editWorkout.EditWorkoutState
+import com.github.guilhermebauer.lealappstestetecnico.ui.theme.LealAppsTesteTecnicoTheme
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -26,6 +31,11 @@ class WorkoutDetailsViewModel(savedStateHandle: SavedStateHandle) : ViewModel() 
     init {
         getExercises()
         getWorkoutDetails()
+    }
+
+    fun refreshData() {
+        getWorkoutDetails()
+        getExercises()
     }
 
     fun onAction(action: WorkoutDetailsAction) = viewModelScope.launch {
@@ -70,6 +80,7 @@ class WorkoutDetailsViewModel(savedStateHandle: SavedStateHandle) : ViewModel() 
 
 
 }
+
 
 
 

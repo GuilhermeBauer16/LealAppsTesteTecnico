@@ -1,4 +1,4 @@
-package com.github.guilhermebauer.lealappstestetecnico.ui.screen.addWorkout
+package com.github.guilhermebauer.lealappstestetecnico.ui.screen.workout.addWorkout
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
