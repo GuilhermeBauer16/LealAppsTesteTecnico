@@ -26,19 +26,26 @@ fun MainNavHost() {
             val viewModel = viewModel<MainScreenViewModel>()
             val state by viewModel.state.collectAsStateWithLifecycle()
 
-            MainScreen(state) {
-                if (it is MainScreenAction.OnAddClick) {
+            MainScreen(state) { action ->
+                when (action) {
+                    is MainScreenAction.OnAddClick -> {
+                        navController.navigate("addWorkout")
+                    }
+                    // NOVA NAVEGAÇÃO
+                    is MainScreenAction.OnWorkoutClick -> {
+                        // Navega para a rota de detalhes, passando o ID do treino
+                        navController.navigate("workoutDetail/${action.workoutId}")
+                    }
 
-                    navController.navigate("addWorkout")
-
-                } else {
-                    viewModel.handleAction(action = it)
+                    else -> {
+                        viewModel.handleAction(action)
+                    }
                 }
+
+
             }
 
-
         }
-
         composable("addWorkout") {
 
             val viewModel = viewModel<NewWorkoutViewModel>()
@@ -62,5 +69,9 @@ fun MainNavHost() {
         }
 
 
+
+
     }
+
+
 }
