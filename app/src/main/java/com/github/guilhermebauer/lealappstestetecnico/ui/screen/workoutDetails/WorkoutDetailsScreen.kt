@@ -12,6 +12,11 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -38,6 +43,42 @@ fun WorkoutDetailsScreen(
     onAction: (WorkoutDetailsAction) -> Unit
 ) {
 
+    if (state.isConfirmDeleteDialogVisible) {
+        AlertDialog(
+            onDismissRequest = {
+
+                onAction(WorkoutDetailsAction.DismissDeleteDialog)
+            },
+            title = {
+                Text(text = "Delete Workout")
+            },
+            text = {
+                Text("You are sure you want to delete this workout? All the exercises will be unavailable.")
+            },
+            confirmButton = {
+                Button(
+                    onClick = {
+
+                        onAction(WorkoutDetailsAction.ConfirmDeleteWorkout)
+                    },
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
+                ) {
+                    Text("Delete")
+                }
+            },
+            dismissButton = {
+                Button(
+                    onClick = {
+
+                        onAction(WorkoutDetailsAction.DismissDeleteDialog)
+                    }
+                ) {
+                    Text("Cancel")
+                }
+            }
+        )
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -49,17 +90,38 @@ fun WorkoutDetailsScreen(
                             contentDescription = "Back"
                         )
                     }
+
+                },
+                actions = {
+
+                    IconButton(onClick = { onAction(WorkoutDetailsAction.OnEditWorkoutClick) }) {
+                        Icon(
+                            imageVector = Icons.Default.Edit,
+                            contentDescription = "Edit Workout"
+                        )
+                    }
+
+
+                    IconButton(onClick = { onAction(WorkoutDetailsAction.OnDeleteWorkoutClick) }) {
+                        Icon(
+                            imageVector = Icons.Default.Delete,
+                            contentDescription = "Delete Workout",
+                            tint = MaterialTheme.colorScheme.error
+                        )
+                    }
                 }
+
 
             )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick =  { onAction(WorkoutDetailsAction.OnAddExerciseClick) }) {
+            FloatingActionButton(onClick = { onAction(WorkoutDetailsAction.OnAddExerciseClick) }) {
                 Icon(
                     imageVector = Icons.Default.Add,
                     contentDescription = "Add Exercise"
                 )
             }
+
         }
 
     ) { paddingValues ->

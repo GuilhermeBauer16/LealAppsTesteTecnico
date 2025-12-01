@@ -86,6 +86,12 @@ fun MainNavHost() {
             val viewModel = viewModel<WorkoutDetailsViewModel>()
             val state by viewModel.state.collectAsStateWithLifecycle()
 
+            LaunchedEffect(state.isWorkoutDeleted) {
+                if (state.isWorkoutDeleted) {
+                    navController.popBackStack()
+                }
+            }
+
             WorkoutDetailsScreen(state = state) { action ->
 
                 when (action) {
@@ -101,8 +107,8 @@ fun MainNavHost() {
                             navController.navigate("newExercise/$workoutId")
                         }
 
-
                     }
+
 
                     else -> {
                         viewModel.onAction(action)

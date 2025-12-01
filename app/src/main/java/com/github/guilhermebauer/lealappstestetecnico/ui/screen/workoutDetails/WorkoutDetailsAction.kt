@@ -6,5 +6,13 @@ sealed interface WorkoutDetailsAction {
 
     data class OnExerciseClick(val exerciseId: String) : WorkoutDetailsAction
     data object NavigateBack : WorkoutDetailsAction
+    data object OnDeleteWorkoutClick : WorkoutDetailsAction
+
+    data object ConfirmDeleteWorkout : WorkoutDetailsAction
+
+
+    data object DismissDeleteDialog : WorkoutDetailsAction
+
+    data object OnEditWorkoutClick : WorkoutDetailsAction
 
 }

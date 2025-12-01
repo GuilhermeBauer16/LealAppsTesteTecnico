@@ -79,6 +79,19 @@ class WorkoutRepository(
         }
     }
 
+    suspend fun deleteWorkout(id: String) = suspendCoroutine { continuation ->
+
+        workoutRef.document(id).delete().addOnSuccessListener {
+            continuation.resume(Unit)
+        }.addOnFailureListener {
+
+            continuation.resumeWithException(it)
+        }
+
+
+    }
+
+
     fun getWorkouts(): Flow<List<Workout>> = callbackFlow {
 
         val snapshotListener = workoutRef.orderBy("name", Query.Direction.ASCENDING)
@@ -101,16 +114,5 @@ class WorkoutRepository(
         }
 
 
-
-        suspend fun deleteTraining(id: String): ResultState<String> {
-            return try {
-                workoutRef.document(id).delete().await()
-                ResultState.Success("Workout deleted")
-
-
-            } catch (e: Exception) {
-                ResultState.Error(e.message ?: "Error to delete workout")
-            }
-        }
     }
 }

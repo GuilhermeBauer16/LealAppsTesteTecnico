@@ -3,6 +3,7 @@ package com.github.guilhermebauer.lealappstestetecnico.ui.screen.workoutDetails
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.github.guilhermebauer.lealappstestetecnico.data.repository.ExerciseRepository
 import com.github.guilhermebauer.lealappstestetecnico.data.repository.WorkoutRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -14,6 +15,8 @@ class WorkoutDetailsViewModel(savedStateHandle: SavedStateHandle) : ViewModel() 
 
 
     private val workoutRepository = WorkoutRepository()
+
+    private val exerciseRepository = ExerciseRepository()
 
     private val workoutId: String = checkNotNull(savedStateHandle["workoutId"])
 
@@ -31,6 +34,25 @@ class WorkoutDetailsViewModel(savedStateHandle: SavedStateHandle) : ViewModel() 
             is WorkoutDetailsAction.OnAddExerciseClick -> {}
             is WorkoutDetailsAction.NavigateBack -> {}
             is WorkoutDetailsAction.OnExerciseClick -> {}
+            is WorkoutDetailsAction.OnDeleteWorkoutClick -> {
+                _state.update { it.copy(isConfirmDeleteDialogVisible = true) }
+                workoutRepository.deleteWorkout(workoutId)
+
+            }
+
+            is WorkoutDetailsAction.DismissDeleteDialog -> {
+                _state.update { it.copy(isConfirmDeleteDialogVisible = false) }
+            }
+
+
+            is WorkoutDetailsAction.ConfirmDeleteWorkout -> {
+                _state.update { it.copy(isConfirmDeleteDialogVisible = false) }
+                workoutRepository.deleteWorkout(workoutId)
+                _state.update { it.copy(isWorkoutDeleted = true) }
+
+            }
+
+            is WorkoutDetailsAction.OnEditWorkoutClick -> TODO()
         }
     }
 

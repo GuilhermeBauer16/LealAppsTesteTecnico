@@ -7,6 +7,8 @@ data class WorkoutDetailsState(
     val isLoading: Boolean = true,
     val workout: Workout? = null,
     val exercises: List<Exercise> = emptyList(),
-    val error: String? = null
+    val error: String? = null,
+    val isConfirmDeleteDialogVisible: Boolean = false,
+    val isWorkoutDeleted: Boolean = false
 
 )
