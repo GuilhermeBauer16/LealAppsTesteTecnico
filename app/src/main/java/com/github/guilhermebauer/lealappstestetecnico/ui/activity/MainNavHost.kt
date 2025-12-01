@@ -5,15 +5,19 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.github.guilhermebauer.lealappstestetecnico.ui.screen.addWorkout.NewWorkoutScreen
 import com.github.guilhermebauer.lealappstestetecnico.ui.screen.addWorkout.NewWorkoutScreenAction
 import com.github.guilhermebauer.lealappstestetecnico.ui.screen.addWorkout.NewWorkoutViewModel
 import com.github.guilhermebauer.lealappstestetecnico.ui.screen.main.MainScreen
 import com.github.guilhermebauer.lealappstestetecnico.ui.screen.main.MainScreenAction
 import com.github.guilhermebauer.lealappstestetecnico.ui.screen.main.MainScreenViewModel
+import com.github.guilhermebauer.lealappstestetecnico.ui.screen.workoutDetails.WorkoutDetailsScreen
+import com.github.guilhermebauer.lealappstestetecnico.ui.screen.workoutDetails.WorkoutDetailsViewModel
 
 @Composable
 fun MainNavHost() {
@@ -31,10 +35,10 @@ fun MainNavHost() {
                     is MainScreenAction.OnAddClick -> {
                         navController.navigate("addWorkout")
                     }
-                    // NOVA NAVEGAÇÃO
+
                     is MainScreenAction.OnWorkoutClick -> {
-                        // Navega para a rota de detalhes, passando o ID do treino
-                        navController.navigate("workoutDetail/${action.workoutId}")
+
+                        navController.navigate("workoutDetails/${action.workoutId}")
                     }
 
                     else -> {
@@ -68,7 +72,18 @@ fun MainNavHost() {
             }
         }
 
+        composable(
+            route = "workoutDetails/{workoutId}",
+            arguments = listOf(navArgument("workoutId") { type = NavType.StringType })
+        ) {
 
+            val viewModel = viewModel<WorkoutDetailsViewModel>()
+            val state by viewModel.state.collectAsStateWithLifecycle()
+
+            WorkoutDetailsScreen(state = state) { action ->
+
+            }
+        }
 
 
     }

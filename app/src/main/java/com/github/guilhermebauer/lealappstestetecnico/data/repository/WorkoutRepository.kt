@@ -1,5 +1,6 @@
 package com.github.guilhermebauer.lealappstestetecnico.data.repository
 
+import com.github.guilhermebauer.lealappstestetecnico.data.model.Exercise
 import com.github.guilhermebauer.lealappstestetecnico.data.model.Workout
 import com.github.guilhermebauer.lealappstestetecnico.utils.ResultState
 import com.google.firebase.firestore.FirebaseFirestore
@@ -44,6 +45,31 @@ class WorkoutRepository(
 
     }
 
+    suspend fun getExercisesForWorkout(workoutId: String): Flow<List<Exercise>> = callbackFlow {
+        val exercisesCollection = workoutRef.document(workoutId).collection("exercises")
+
+        val snapshotListener = exercisesCollection.orderBy("name")
+            .addSnapshotListener { snapshot, e ->
+                if (e != null) {
+                    close(e)
+                    return@addSnapshotListener
+                }
+                if (snapshot != null) {
+                    val exercises = snapshot.toObjects(Exercise::class.java)
+                    trySend(exercises).isSuccess
+                }
+            }
+        awaitClose { snapshotListener.remove() }
+    }
+
+    suspend fun getWorkoutById(workoutId: String): Workout? {
+        return try {
+            workoutRef.document(workoutId).get().await().toObject(Workout::class.java)
+        } catch (e: Exception) {
+            null
+        }
+    }
+
     suspend fun updateWorkout(workout: Workout): ResultState<String> {
         return try {
             workoutRef.document(workout.id).set(workout).await()
@@ -73,6 +99,7 @@ class WorkoutRepository(
         awaitClose {
             snapshotListener.remove()
         }
+
 
 
         suspend fun deleteTraining(id: String): ResultState<String> {
