@@ -25,6 +25,15 @@ class WorkoutDetailsViewModel(savedStateHandle: SavedStateHandle) : ViewModel() 
         getWorkoutDetails()
     }
 
+    fun onAction(action: WorkoutDetailsAction) = viewModelScope.launch {
+        when (action) {
+
+            is WorkoutDetailsAction.OnAddExerciseClick -> {}
+            is WorkoutDetailsAction.NavigateBack -> {}
+            is WorkoutDetailsAction.OnExerciseClick -> {}
+        }
+    }
+
 
     private fun getWorkoutDetails() = viewModelScope.launch {
         val workout = workoutRepository.getWorkoutById(workoutId)

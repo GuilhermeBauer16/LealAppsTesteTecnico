@@ -43,7 +43,7 @@ fun WorkoutDetailsScreen(
             TopAppBar(
                 title = { Text(state.workout?.name ?: "Loading Workout....") },
                 navigationIcon = {
-                    IconButton(onClick = { /* TODO: Navegar para trás */ }) {
+                    IconButton(onClick = { onAction(WorkoutDetailsAction.NavigateBack) }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "Back"
@@ -54,7 +54,7 @@ fun WorkoutDetailsScreen(
             )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = { /* TODO: Adicionar um novo exercício */ }) {
+            FloatingActionButton(onClick =  { onAction(WorkoutDetailsAction.OnAddExerciseClick) }) {
                 Icon(
                     imageVector = Icons.Default.Add,
                     contentDescription = "Add Exercise"

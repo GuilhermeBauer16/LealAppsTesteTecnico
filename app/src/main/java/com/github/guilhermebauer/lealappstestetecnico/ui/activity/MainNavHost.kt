@@ -16,6 +16,10 @@ import com.github.guilhermebauer.lealappstestetecnico.ui.screen.addWorkout.NewWo
 import com.github.guilhermebauer.lealappstestetecnico.ui.screen.main.MainScreen
 import com.github.guilhermebauer.lealappstestetecnico.ui.screen.main.MainScreenAction
 import com.github.guilhermebauer.lealappstestetecnico.ui.screen.main.MainScreenViewModel
+import com.github.guilhermebauer.lealappstestetecnico.ui.screen.newExercise.NewExerciseAction
+import com.github.guilhermebauer.lealappstestetecnico.ui.screen.newExercise.NewExerciseScreen
+import com.github.guilhermebauer.lealappstestetecnico.ui.screen.newExercise.NewExerciseViewModel
+import com.github.guilhermebauer.lealappstestetecnico.ui.screen.workoutDetails.WorkoutDetailsAction
 import com.github.guilhermebauer.lealappstestetecnico.ui.screen.workoutDetails.WorkoutDetailsScreen
 import com.github.guilhermebauer.lealappstestetecnico.ui.screen.workoutDetails.WorkoutDetailsViewModel
 
@@ -40,6 +44,8 @@ fun MainNavHost() {
 
                         navController.navigate("workoutDetails/${action.workoutId}")
                     }
+
+
 
                     else -> {
                         viewModel.handleAction(action)
@@ -82,11 +88,57 @@ fun MainNavHost() {
 
             WorkoutDetailsScreen(state = state) { action ->
 
+                when (action) {
+
+                    is WorkoutDetailsAction.NavigateBack -> {
+                        navController.popBackStack()
+                    }
+
+                    is WorkoutDetailsAction.OnAddExerciseClick -> {
+
+                        val workoutId = state.workout?.id
+                        if (workoutId != null) {
+                            navController.navigate("newExercise/$workoutId")
+                        }
+
+
+                    }
+
+                    else -> {
+                        viewModel.onAction(action)
+                    }
+
+                }
+            }
+
+
+        }
+
+        composable(
+            route = "newExercise/{workoutId}",
+            arguments = listOf(navArgument("workoutId") { type = NavType.StringType })
+        ) {
+
+            val viewModel = viewModel<NewExerciseViewModel>()
+            val state by viewModel.state.collectAsStateWithLifecycle()
+
+
+            LaunchedEffect(state.isExerciseSaved) {
+                if (state.isExerciseSaved) {
+                    navController.popBackStack()
+                }
+            }
+
+            NewExerciseScreen(state = state) { action ->
+                if (action is NewExerciseAction.NavigateBack) {
+                    navController.popBackStack()
+                } else {
+                    viewModel.onAction(action)
+                }
             }
         }
 
 
+
     }
-
-
 }
