@@ -10,6 +10,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.github.guilhermebauer.lealappstestetecnico.ui.screen.editExcercise.EditExerciseAction
+import com.github.guilhermebauer.lealappstestetecnico.ui.screen.editExcercise.EditExerciseScreen
+import com.github.guilhermebauer.lealappstestetecnico.ui.screen.editExcercise.EditExerciseViewModel
 import com.github.guilhermebauer.lealappstestetecnico.ui.screen.main.MainScreen
 import com.github.guilhermebauer.lealappstestetecnico.ui.screen.main.MainScreenAction
 import com.github.guilhermebauer.lealappstestetecnico.ui.screen.main.MainScreenViewModel
@@ -121,7 +124,6 @@ fun MainNavHost() {
                     }
 
                     is WorkoutDetailsAction.OnEditExerciseClick -> {
-
                         navController.navigate("editExercise/${state.workout?.id}/${action.exerciseId}")
                     }
 
@@ -162,7 +164,9 @@ fun MainNavHost() {
 
         composable(
             route = "editWorkout/{workoutId}",
-            arguments = listOf(navArgument("workoutId") { type = NavType.StringType })
+            arguments = listOf(
+                navArgument("workoutId") { type = NavType.StringType }
+            )
         ) {
             val viewModel = viewModel<EditWorkoutViewModel>()
             val state by viewModel.state.collectAsStateWithLifecycle()
@@ -186,6 +190,7 @@ fun MainNavHost() {
 
         }
 
+
         composable(
             route = "editExercise/{workoutId}/{exerciseId}",
             arguments = listOf(
@@ -193,6 +198,24 @@ fun MainNavHost() {
                 navArgument("exerciseId") { type = NavType.StringType }
             )
         ) {
+
+            val viewModel = viewModel<EditExerciseViewModel>()
+            val state by viewModel.state.collectAsStateWithLifecycle()
+
+
+            LaunchedEffect(state.isExerciseUpdated) {
+                if (state.isExerciseUpdated) {
+                    navController.popBackStack()
+                }
+            }
+
+            EditExerciseScreen(state = state) { action ->
+                if (action is EditExerciseAction.NavigateBack) {
+                    navController.popBackStack()
+                } else {
+                    viewModel.onAction(action)
+                }
+            }
 
         }
     }

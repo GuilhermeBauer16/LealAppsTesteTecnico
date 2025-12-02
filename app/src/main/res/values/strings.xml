@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">LealAppsTesteTecnico</string>
-    <string name="leal_apps">Leal Apps</string>
     <string name="no_workout_found_click_in_the_button_to_add_one">No workout found\nClick in the button \'+\' to add one.</string>
     <string name="observations_optional">Observations (Optional)</string>
     <string name="no_exercise_register_click_to_add_one">No exercise register.\nClick \'+\' to add one.</string>
+    <string name="leal_apps">Leal Apps</string>
 </resources>

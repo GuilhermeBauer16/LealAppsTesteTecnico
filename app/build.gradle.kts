@@ -12,7 +12,7 @@ android {
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.github.guilhermebauer.lealappstestetecnico.app"
+        applicationId = "com.github.guilhermebauer.lealappstestetecnico"
         minSdk = 24
         targetSdk = 36
         versionCode = 1
@@ -62,30 +62,11 @@ dependencies {
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
-
-    implementation(platform("com.google.firebase:firebase-bom:34.6.0"))
-
-    implementation("com.google.firebase:firebase-analytics")
-
-    // Auth
-    implementation("com.google.firebase:firebase-auth")
-
-
-    implementation("com.google.firebase:firebase-firestore")
-
-
-    implementation("com.google.firebase:firebase-storage")
-
-
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.8.1")
-
-    implementation("io.coil-kt:coil-compose:2.6.0")
-
-    // Material Design
-    implementation(libs.material.v1120)
-
-    val nav_version = "2.9.6"
-
-    implementation("androidx.navigation:navigation-compose:$nav_version")
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.firestore)
+    implementation(libs.firebase.storage)
+    implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.kotlinx.coroutines.play.services)
+    implementation(libs.coil.compose)
+    implementation(libs.androidx.navigation.compose)
 }

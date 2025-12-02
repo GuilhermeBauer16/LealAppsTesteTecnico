@@ -1,5 +1,6 @@
 package com.github.guilhermebauer.lealappstestetecnico.ui.screen.main
 
+import com.github.guilhermebauer.lealappstestetecnico.R
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -29,7 +30,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.github.guilhermebauer.lealappstestetecnico.R
 import com.github.guilhermebauer.lealappstestetecnico.data.model.Workout
 import com.github.guilhermebauer.lealappstestetecnico.ui.theme.LealAppsTesteTecnicoTheme
 

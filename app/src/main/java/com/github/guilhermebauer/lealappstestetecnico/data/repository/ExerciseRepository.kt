@@ -1,7 +1,7 @@
 package com.github.guilhermebauer.lealappstestetecnico.data.repository
 
 
-import android.net.Uri
+import androidx.core.net.toUri
 import com.github.guilhermebauer.lealappstestetecnico.data.model.Exercise
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
@@ -12,7 +12,7 @@ import kotlinx.coroutines.tasks.await
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
-import androidx.core.net.toUri
+import kotlin.text.get
 
 class ExerciseRepository(
     private val db: FirebaseFirestore = FirebaseFirestore.getInstance(),
@@ -36,6 +36,7 @@ class ExerciseRepository(
 
 
         }
+
 
     suspend fun updateExercise(workoutId: String, exercise: Exercise) =
         suspendCoroutine { continuation ->
@@ -66,11 +67,6 @@ class ExerciseRepository(
             }
     }
 
-    private fun getExerciseCollectionRef(workoutId: String) =
-        db.collection("exercises")
-            .document(workoutId).collection("exercises")
-
-
     fun getExercisesForWorkout(workoutId: String): Flow<List<Exercise>> =
         callbackFlow {
             val listener = workoutCollection.document(workoutId)
@@ -90,6 +86,14 @@ class ExerciseRepository(
             awaitClose { listener.remove() }
         }
 
+    suspend fun getExerciseCollectionRef(workoutId: String) = {
+        db.collection("exercises")
+            .document(workoutId).collection("exercises")
+
+    }
+
+
+
 
     suspend fun deleteExercise(workoutId: String, exerciseId: String) {
         try {
@@ -102,4 +106,26 @@ class ExerciseRepository(
             println("Error to delete exercise: ${e.message}")
         }
     }
+
+    suspend fun getExerciseById(workoutId: String, exerciseId: String) =
+        suspendCoroutine { continuation ->
+
+
+                workoutCollection.document(workoutId)
+                    .collection("exercises")
+                    .document(exerciseId)
+                    .get()
+                    .addOnSuccessListener {
+                        continuation
+                            .resume(it.toObject(Exercise::class.java))
+
+                    }.addOnFailureListener {
+                        continuation.resumeWithException(it)
+                    }
+
+
+
+
+        }
 }
+
