@@ -7,8 +7,10 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.github.guilhermebauer.lealappstestetecnico.R
 import com.github.guilhermebauer.lealappstestetecnico.ui.theme.LealAppsTesteTecnicoTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -20,7 +22,7 @@ fun EditWorkoutScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Edit Workout") },
+                title = { Text(stringResource(R.string.edit_workout)) },
                 navigationIcon = {
                     IconButton(onClick = { onAction(EditWorkoutAction.NavigateBack) }) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
@@ -30,7 +32,8 @@ fun EditWorkoutScreen(
         }
     ) { paddingValues ->
         if (state.isLoadingInitialData) {
-            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            Box(modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center) {
                 CircularProgressIndicator()
             }
         } else {
@@ -39,20 +42,26 @@ fun EditWorkoutScreen(
                     .fillMaxSize()
                     .padding(paddingValues)
                     .padding(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(16.dp)
+                horizontalAlignment = Alignment
+                    .CenterHorizontally,
+                verticalArrangement = Arrangement
+                    .spacedBy(16.dp)
             ) {
                 OutlinedTextField(
                     value = state.name,
-                    onValueChange = { onAction(EditWorkoutAction.OnNameChange(it)) },
-                    label = { Text("Name") },
-                    modifier = Modifier.fillMaxWidth()
+                    onValueChange = { onAction(EditWorkoutAction
+                        .OnNameChange(it)) },
+                    label = { Text(stringResource(R.string.name)) },
+                    modifier = Modifier
+                        .fillMaxWidth()
                 )
 
                 OutlinedTextField(
                     value = state.description,
-                    onValueChange = { onAction(EditWorkoutAction.OnDescriptionChange(it)) },
-                    label = { Text("Description (optional)") },
+                    onValueChange = { onAction(EditWorkoutAction
+                        .OnDescriptionChange(it)) },
+                    label = { Text(stringResource(R
+                        .string.description_optional)) },
                     modifier = Modifier.fillMaxWidth(),
                     minLines = 3
                 )
@@ -65,9 +74,11 @@ fun EditWorkoutScreen(
                     enabled = state.name.isNotBlank() && !state.isUpdating
                 ) {
                     if (state.isUpdating) {
-                        CircularProgressIndicator(modifier = Modifier.size(24.dp), color = MaterialTheme.colorScheme.onPrimary)
+                        CircularProgressIndicator(modifier = Modifier.size(24.dp)
+                            , color = MaterialTheme.colorScheme.onPrimary)
                     } else {
-                        Text("Update information")
+                        Text(stringResource(R
+                            .string.update_information))
                     }
                 }
             }

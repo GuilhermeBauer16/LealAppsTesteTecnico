@@ -10,10 +10,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -34,6 +32,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -58,10 +57,14 @@ fun EditExerciseScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Edit Exercise") },
+                title = { Text(stringResource(R.string.edit_exercise)) },
                 navigationIcon = {
                     IconButton(onClick = { onAction(EditExerciseAction.NavigateBack) }) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(Icons
+                            .AutoMirrored
+                            .Filled
+                            .ArrowBack,
+                            contentDescription = "Back")
                     }
                 }
             )
@@ -116,15 +119,17 @@ fun EditExerciseScreen(
 
                 OutlinedTextField(
                     value = state.name,
-                    onValueChange = { onAction(EditExerciseAction.OnNameChange(it)) },
-                    label = { Text("Name") },
+                    onValueChange = { onAction(EditExerciseAction
+                        .OnNameChange(it)) },
+                    label = { Text(stringResource(R.string.name)) },
                     modifier = Modifier.fillMaxWidth()
                 )
 
                 OutlinedTextField(
                     value = state.observations,
-                    onValueChange = { onAction(EditExerciseAction.OnObservationsChange(it)) },
-                    label = { Text("Observation") },
+                    onValueChange = { onAction(EditExerciseAction
+                        .OnObservationsChange(it)) },
+                    label = { Text(stringResource(R.string.observation_optional)) },
                     modifier = Modifier.fillMaxWidth(),
                     minLines = 3
                 )
@@ -140,7 +145,7 @@ fun EditExerciseScreen(
                             color = MaterialTheme.colorScheme.onPrimary
                         )
                     } else {
-                        Text("Update information")
+                        Text(stringResource(R.string.update_information))
                     }
                 }
             }

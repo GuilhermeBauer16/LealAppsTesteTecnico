@@ -10,18 +10,13 @@ sealed interface WorkoutDetailsAction {
     data object NavigateBack : WorkoutDetailsAction
     data object OnDeleteWorkoutClick : WorkoutDetailsAction
     data object ConfirmDeleteWorkout : WorkoutDetailsAction
-
     data object DismissDeleteDialog : WorkoutDetailsAction
-
     data object OnEditWorkoutClick : WorkoutDetailsAction
 
     data class OnEditExerciseClick(val exerciseId: String) : WorkoutDetailsAction
 
-
     data class OnDeleteExerciseClick(val exercise: Exercise) : WorkoutDetailsAction
-
     data object ConfirmDeleteExercise : WorkoutDetailsAction
-
     data object DismissDeleteExerciseDialog : WorkoutDetailsAction
 
 }

@@ -29,7 +29,6 @@ class MainScreenViewModel : ViewModel() {
             }
 
             else -> {}
-
         }
     }
 

@@ -56,7 +56,7 @@ fun NewExerciseScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("New Exercise") },
+                title = { Text(stringResource(R.string.new_exercise)) },
                 navigationIcon = {
                     IconButton(onClick = { onAction(NewExerciseAction.NavigateBack) }) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
@@ -70,8 +70,10 @@ fun NewExerciseScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
                 .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+            horizontalAlignment = Alignment
+                .CenterHorizontally,
+            verticalArrangement = Arrangement
+                .spacedBy(16.dp)
         ) {
 
             if (state.imageUri == null) {
@@ -83,7 +85,9 @@ fun NewExerciseScreen(
                         .clickable {
                             launcher.launch(
                                 PickVisualMediaRequest(
-                                    ActivityResultContracts.PickVisualMedia.ImageOnly
+                                    ActivityResultContracts
+                                        .PickVisualMedia
+                                        .ImageOnly
                                 )
                             )
                         },
@@ -113,20 +117,23 @@ fun NewExerciseScreen(
             }
             OutlinedTextField(
                 value = state.name,
-                onValueChange = { onAction(NewExerciseAction.OnNameChange(it)) },
-                label = { Text("Name") },
+                onValueChange = { onAction(NewExerciseAction
+                    .OnNameChange(it)) },
+                label = { Text(stringResource(R.string.name)) },
                 modifier = Modifier.fillMaxWidth()
             )
 
             OutlinedTextField(
                 value = state.observations,
-                onValueChange = { onAction(NewExerciseAction.OnObservationsChange(it)) },
+                onValueChange = { onAction(NewExerciseAction
+                    .OnObservationsChange(it)) },
                 label = { Text(stringResource(R.string.observations_optional)) },
                 modifier = Modifier.fillMaxWidth()
             )
             Spacer(modifier = Modifier.weight(1f))
             Button(
-                onClick = { onAction(NewExerciseAction.SaveExercise) },
+                onClick = { onAction(NewExerciseAction
+                    .SaveExercise) },
                 modifier = Modifier.fillMaxWidth(),
                 enabled = state.name.isNotBlank() && !state.isLoading
             ) {
@@ -136,7 +143,7 @@ fun NewExerciseScreen(
                         color = MaterialTheme.colorScheme.onPrimary
                     )
                 } else {
-                    Text("Save Exercise")
+                    Text(stringResource(R.string.save_exercise))
                 }
             }
         }

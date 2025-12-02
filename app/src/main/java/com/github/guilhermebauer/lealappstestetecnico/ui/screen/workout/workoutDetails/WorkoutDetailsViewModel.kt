@@ -63,14 +63,14 @@ class WorkoutDetailsViewModel(savedStateHandle: SavedStateHandle) : ViewModel() 
             }
 
             is WorkoutDetailsAction.OnEditExerciseClick -> {
-                // A navegação será tratada no NavHost. Ação vazia aqui.
+
             }
 
             is WorkoutDetailsAction.OnDeleteExerciseClick -> {
                 _state.update {
                     it.copy(
                         isConfirmDeleteExerciseDialogVisible = true,
-                        exerciseToDelete = action.exercise // Guarda qual exercício deletar
+                        exerciseToDelete = action.exercise
                     )
                 }
             }

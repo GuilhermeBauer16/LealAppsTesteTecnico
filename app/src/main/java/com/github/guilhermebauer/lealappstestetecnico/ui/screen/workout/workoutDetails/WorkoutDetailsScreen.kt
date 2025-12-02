@@ -63,19 +63,24 @@ fun WorkoutDetailsScreen(
     if (state.isConfirmDeleteExerciseDialogVisible) {
         AlertDialog(
             onDismissRequest = { onAction(WorkoutDetailsAction.DismissDeleteExerciseDialog) },
-            title = { Text("Delete Exercise") },
-            text = { Text("You are sure you want to delete the exercise '${state.exerciseToDelete?.name}'?") },
+            title = { Text(stringResource(R.string.delete_exercise)) },
+            text = { Text(
+                stringResource(
+                    R.string.you_are_sure_you_want_to_delete_the_exercise,
+                    state.exerciseToDelete?.name ?: ""
+                )) },
             confirmButton = {
                 Button(
-                    onClick = { onAction(WorkoutDetailsAction.ConfirmDeleteExercise) },
+                    onClick = { onAction(WorkoutDetailsAction
+                        .ConfirmDeleteExercise) },
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
                 ) {
-                    Text("Delete")
+                    Text(stringResource(R.string.delete))
                 }
             },
             dismissButton = {
                 Button(onClick = { onAction(WorkoutDetailsAction.DismissDeleteExerciseDialog) }) {
-                    Text("Cancel")
+                    Text(stringResource(R.string.cancel))
                 }
             }
         )
@@ -88,10 +93,12 @@ fun WorkoutDetailsScreen(
                 onAction(WorkoutDetailsAction.DismissDeleteDialog)
             },
             title = {
-                Text(text = "Delete Workout")
+                Text(text = stringResource(R.string.delete_workout))
             },
             text = {
-                Text("You are sure you want to delete this workout? All the exercises will be unavailable.")
+                Text(stringResource(R.
+                string
+                    .you_are_sure_you_want_to_delete_this_workout_all_the_exercises_will_be_unavailable))
             },
             confirmButton = {
                 Button(
@@ -99,9 +106,10 @@ fun WorkoutDetailsScreen(
 
                         onAction(WorkoutDetailsAction.ConfirmDeleteWorkout)
                     },
-                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.error)
                 ) {
-                    Text("Delete")
+                    Text(stringResource(R.string.delete))
                 }
             },
             dismissButton = {
@@ -111,7 +119,7 @@ fun WorkoutDetailsScreen(
                         onAction(WorkoutDetailsAction.DismissDeleteDialog)
                     }
                 ) {
-                    Text("Cancel")
+                    Text(stringResource(R.string.cancel))
                 }
             }
         )
@@ -120,7 +128,7 @@ fun WorkoutDetailsScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(state.workout?.name ?: "Loading Workout....") },
+                title = { Text(state.workout?.name ?: stringResource(R.string.loading_workout)) },
                 navigationIcon = {
                     IconButton(onClick = { onAction(WorkoutDetailsAction.NavigateBack) }) {
                         Icon(
@@ -227,7 +235,8 @@ fun ExerciseItem(
                 contentScale = ContentScale.Crop
 
             )
-            Column(modifier = Modifier.weight(1f)
+            Column(modifier = Modifier
+                .weight(1f)
                 .padding(start = 12.dp)) {
                 Text(text = exercise.name, style = MaterialTheme.typography.titleMedium)
 

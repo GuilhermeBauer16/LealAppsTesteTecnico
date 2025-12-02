@@ -3,6 +3,7 @@ package com.github.guilhermebauer.lealappstestetecnico.ui.screen.workout.editWor
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.github.guilhermebauer.lealappstestetecnico.R
 import com.github.guilhermebauer.lealappstestetecnico.data.model.Workout
 import com.github.guilhermebauer.lealappstestetecnico.data.repository.WorkoutRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -37,15 +38,17 @@ class EditWorkoutViewModel(
                 )
             }
         } else {
-            _state.update { it.copy(error = "Workout not found!.", isLoadingInitialData = false) }
+            _state.update { it.copy(error = "Workout not found", isLoadingInitialData = false) }
         }
     }
 
     fun onAction(action: EditWorkoutAction) {
 
         when (action) {
-            is EditWorkoutAction.OnNameChange -> _state.update { it.copy(name = action.name) }
-            is EditWorkoutAction.OnDescriptionChange -> _state.update { it.copy(description = action.description) }
+            is EditWorkoutAction.OnNameChange -> _state
+                .update { it.copy(name = action.name) }
+            is EditWorkoutAction.OnDescriptionChange -> _state
+                .update { it.copy(description = action.description) }
             is EditWorkoutAction.UpdateWorkout -> updateWorkout()
             is EditWorkoutAction.NavigateBack -> {}
         }

@@ -23,8 +23,10 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.github.guilhermebauer.lealappstestetecnico.R
 import com.github.guilhermebauer.lealappstestetecnico.ui.theme.LealAppsTesteTecnicoTheme
 
 @Composable
@@ -37,7 +39,7 @@ fun NewWorkoutScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("New Workout") },
+                title = { Text(stringResource(R.string.new_workout)) },
 
                 navigationIcon = {
                     IconButton(onClick = { onAction(NewWorkoutScreenAction.NavigateBack) }) {
@@ -48,9 +50,15 @@ fun NewWorkoutScreen(
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                    navigationIconContentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                    containerColor = MaterialTheme
+                        .colorScheme
+                        .primaryContainer,
+                    titleContentColor = MaterialTheme
+                        .colorScheme
+                        .onPrimaryContainer,
+                    navigationIconContentColor = MaterialTheme
+                        .colorScheme
+                        .onPrimaryContainer
                 )
             )
 
@@ -64,15 +72,23 @@ fun NewWorkoutScreen(
                 .verticalScroll(rememberScrollState())
                 .padding(paddingValues)
                 .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(20.dp)
+            verticalArrangement = Arrangement
+                .spacedBy(20.dp)
 
         ) {
 
             OutlinedTextField(
                 value = state.name,
                 onValueChange = { onAction(NewWorkoutScreenAction.OnNameChange(it)) },
-                label = { Text("Name") },
-                placeholder = { Text("Type the name of the workout...") },
+                label = { Text(stringResource(R.string.name)) },
+                placeholder = {
+                    Text(
+                        stringResource(
+                            R.string
+                                .type_the_name_of_the_workout
+                        )
+                    )
+                },
                 modifier = Modifier.fillMaxWidth()
 
             )
@@ -80,8 +96,15 @@ fun NewWorkoutScreen(
             OutlinedTextField(
                 value = state.description,
                 onValueChange = { onAction(NewWorkoutScreenAction.OnDescriptionChange(it)) },
-                label = { Text("Description") },
-                placeholder = { Text("Type the description of the workout...") },
+                label = { Text(stringResource(R.string.description)) },
+                placeholder = {
+                    Text(
+                        stringResource(
+                            R.string
+                                .type_the_description_of_the_workout
+                        )
+                    )
+                },
                 minLines = 3,
                 maxLines = 5,
                 modifier = Modifier.fillMaxWidth()
@@ -101,14 +124,21 @@ fun NewWorkoutScreen(
                     .height(56.dp),
                 shape = MaterialTheme.shapes.medium,
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    contentColor = MaterialTheme.colorScheme.onPrimary
+                    containerColor = MaterialTheme
+                        .colorScheme
+                        .primary,
+                    contentColor = MaterialTheme
+                        .colorScheme
+                        .onPrimary
                 ),
                 enabled = state.isSaveButtonEnabled
 
 
             ) {
-                Text("Save Workout", style = MaterialTheme.typography.titleMedium)
+                Text(
+                    stringResource(R.string.save_workout),
+                    style = MaterialTheme.typography.titleMedium
+                )
             }
 
 

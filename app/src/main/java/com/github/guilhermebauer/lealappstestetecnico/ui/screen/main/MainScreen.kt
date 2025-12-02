@@ -89,7 +89,8 @@ fun MainScreen(
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
                     contentPadding = PaddingValues(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                    verticalArrangement = Arrangement
+                        .spacedBy(16.dp)
                 ) {
                     items(state.workoutList, key = { it.id }) { workout ->
                         WorkoutItem(workout = workout, onAction = onAction)
@@ -108,7 +109,8 @@ fun WorkoutItem(workout: Workout, onAction: (MainScreenAction) -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { onAction(MainScreenAction.OnWorkoutClick(workout.id)) }
+            .clickable { onAction(MainScreenAction
+                .OnWorkoutClick(workout.id)) }
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
