@@ -1,7 +1,8 @@
-package com.github.guilhermebauer.lealappstestetecnico.ui.screen.addWorkout
+package com.github.guilhermebauer.lealappstestetecnico.ui.screen.workout.addWorkout
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.github.guilhermebauer.lealappstestetecnico.R
 import com.github.guilhermebauer.lealappstestetecnico.data.model.Workout
 import com.github.guilhermebauer.lealappstestetecnico.data.repository.WorkoutRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,10 +26,8 @@ class NewWorkoutViewModel() : ViewModel() {
                     currentState.copy(name = action.name)
 
                 }
-
                 updateButtonState()
-
-
+                
             }
 
             is NewWorkoutScreenAction.OnDescriptionChange -> {
@@ -39,7 +38,6 @@ class NewWorkoutViewModel() : ViewModel() {
             }
 
             NewWorkoutScreenAction.SaveWorkout -> {
-
                     saveWorkout()
 
             }
@@ -61,7 +59,7 @@ class NewWorkoutViewModel() : ViewModel() {
 
         if (currentName.isBlank()) {
 
-            _state.update { it.copy(errorMessage = "Name can't be empty") }
+            _state.update { it.copy(errorMessage = "Name cannot be empty") }
 
             return@launch
 
