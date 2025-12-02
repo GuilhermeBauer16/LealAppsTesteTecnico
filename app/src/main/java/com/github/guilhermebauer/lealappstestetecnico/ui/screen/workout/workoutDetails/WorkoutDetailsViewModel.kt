@@ -62,6 +62,44 @@ class WorkoutDetailsViewModel(savedStateHandle: SavedStateHandle) : ViewModel() 
 
             }
 
+            is WorkoutDetailsAction.OnEditExerciseClick -> {
+                // A navegação será tratada no NavHost. Ação vazia aqui.
+            }
+
+            is WorkoutDetailsAction.OnDeleteExerciseClick -> {
+                _state.update {
+                    it.copy(
+                        isConfirmDeleteExerciseDialogVisible = true,
+                        exerciseToDelete = action.exercise // Guarda qual exercício deletar
+                    )
+                }
+            }
+
+            is WorkoutDetailsAction.DismissDeleteExerciseDialog -> {
+                _state.update {
+                    it.copy(
+                        isConfirmDeleteExerciseDialogVisible = false,
+                        exerciseToDelete = null // Limpa o exercício guardado
+                    )
+                }
+            }
+
+            is WorkoutDetailsAction.ConfirmDeleteExercise -> {
+                viewModelScope.launch {
+                    val exerciseIdToDelete = _state.value.exerciseToDelete?.id
+                    if (exerciseIdToDelete != null) {
+                        exerciseRepository.deleteExercise(workoutId = workoutId, exerciseId = exerciseIdToDelete)
+                    }
+
+                    _state.update {
+                        it.copy(
+                            isConfirmDeleteExerciseDialogVisible = false,
+                            exerciseToDelete = null
+                        )
+                    }
+                }
+            }
+
             is WorkoutDetailsAction.OnEditWorkoutClick -> TODO()
         }
     }
@@ -73,8 +111,12 @@ class WorkoutDetailsViewModel(savedStateHandle: SavedStateHandle) : ViewModel() 
     }
 
     private fun getExercises() = viewModelScope.launch {
-        workoutRepository.getExercisesForWorkout(workoutId).collectLatest { exercises ->
-            _state.update { it.copy(isLoading = false, exercises = exercises) }
+        workoutRepository.getExercisesForWorkout(workoutId)
+            .collectLatest { exercises ->
+
+            _state.update {
+                it.copy(isLoading = false, exercises = exercises)
+            }
         }
     }
 

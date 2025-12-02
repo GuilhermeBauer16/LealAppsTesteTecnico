@@ -24,10 +24,12 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.github.guilhermebauer.lealappstestetecnico.R
 import com.github.guilhermebauer.lealappstestetecnico.data.model.Workout
 import com.github.guilhermebauer.lealappstestetecnico.ui.theme.LealAppsTesteTecnicoTheme
 
@@ -46,7 +48,7 @@ fun MainScreen(
                 TopAppBar(
                     title = {
                         Text(
-                            "Leal Apps",
+                            stringResource(R.string.leal_apps),
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onPrimaryContainer,
 
@@ -79,7 +81,7 @@ fun MainScreen(
                 CircularProgressIndicator()
             } else if (state.workoutList.isEmpty()) {
                 Text(
-                    text = "Nenhum treino cadastrado.\nClique no botão '+' para começar.",
+                    text = stringResource(R.string.no_workout_found_click_in_the_button_to_add_one),
                     textAlign = TextAlign.Center
                 )
             } else {
@@ -89,7 +91,7 @@ fun MainScreen(
                     contentPadding = PaddingValues(16.dp),
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    items(state.workoutList) { workout ->
+                    items(state.workoutList, key = { it.id }) { workout ->
                         WorkoutItem(workout = workout, onAction = onAction)
                     }
                 }

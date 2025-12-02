@@ -9,6 +9,8 @@ data class WorkoutDetailsState(
     val exercises: List<Exercise> = emptyList(),
     val error: String? = null,
     val isConfirmDeleteDialogVisible: Boolean = false,
-    val isWorkoutDeleted: Boolean = false
+    val isWorkoutDeleted: Boolean = false,
+    val exerciseToDelete: Exercise? = null,
+    val isConfirmDeleteExerciseDialogVisible: Boolean = false
 
 )

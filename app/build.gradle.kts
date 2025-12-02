@@ -70,15 +70,17 @@ dependencies {
     // Auth
     implementation("com.google.firebase:firebase-auth")
 
-    // Firestore
+
     implementation("com.google.firebase:firebase-firestore")
 
-    // Storage
+
     implementation("com.google.firebase:firebase-storage")
 
-    // Kotlin Coroutines (necessário para usar await())
+
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.8.1")
+
+    implementation("io.coil-kt:coil-compose:2.6.0")
 
     // Material Design
     implementation(libs.material.v1120)

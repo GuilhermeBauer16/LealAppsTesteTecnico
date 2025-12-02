@@ -21,6 +21,7 @@ class NewExerciseViewModel(
     private val _state = MutableStateFlow(NewExerciseState())
     val state = _state.asStateFlow()
 
+
     fun onAction(action: NewExerciseAction) = viewModelScope.launch {
         when (action) {
 
@@ -28,6 +29,14 @@ class NewExerciseViewModel(
             is NewExerciseAction.OnObservationsChange -> _state.update { it.copy(observations = action.observations) }
             is NewExerciseAction.SaveExercise -> saveExercise()
             is NewExerciseAction.NavigateBack -> {}
+
+            is NewExerciseAction.OnImageSelected -> {
+                _state.update {
+                    it.copy(imageUri = action.uri.toString())
+
+                }
+
+            }
         }
 
 
@@ -38,10 +47,12 @@ class NewExerciseViewModel(
 
         _state.update { it.copy(isLoading = true) }
 
+        val url = exerciseRepository.uploadExercisePhoto(_state.value.imageUri!!)
 
         val exercise = Exercise(
             name = _state.value.name,
-            observations = _state.value.observations
+            observations = _state.value.observations,
+            imageUrl = url.toString()
         )
 
         exerciseRepository.createExerciseToWorkout(workoutId, exercise)

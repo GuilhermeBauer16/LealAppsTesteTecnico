@@ -1,4 +1,4 @@
-package com.github.guilhermebauer.lealappstestetecnico.ui.activity
+package com.github.guilhermebauer.lealappstestetecnico.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -120,6 +120,11 @@ fun MainNavHost() {
                         state.workout?.id?.let { navController.navigate("editWorkout/$it") }
                     }
 
+                    is WorkoutDetailsAction.OnEditExerciseClick -> {
+
+                        navController.navigate("editExercise/${state.workout?.id}/${action.exerciseId}")
+                    }
+
 
                     else -> {
                         viewModel.onAction(action)
@@ -180,5 +185,16 @@ fun MainNavHost() {
 
 
         }
+
+        composable(
+            route = "editExercise/{workoutId}/{exerciseId}",
+            arguments = listOf(
+                navArgument("workoutId") { type = NavType.StringType },
+                navArgument("exerciseId") { type = NavType.StringType }
+            )
+        ) {
+
+        }
     }
 }
+

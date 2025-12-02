@@ -7,7 +7,6 @@ import com.google.firebase.firestore.Query
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.tasks.await
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
@@ -18,16 +17,6 @@ class WorkoutRepository(
 
     private val workoutRef = db.collection("workouts")
 
-//    suspend fun createWorkout(workout: Workout): ResultState<String> {
-//        return try {
-//            val doc = workoutRef.document()
-//            val newWorkout = workout.copy(id = doc.id)
-//            doc.set(newWorkout).await()
-//            ResultState.Success("Workout Created")
-//        } catch (e: Exception) {
-//            ResultState.Error(e.message ?: "Error to create workout")
-//        }
-//    }
 
     suspend fun createWorkout(workout: Workout) = suspendCoroutine { continuation ->
 
@@ -53,24 +42,33 @@ class WorkoutRepository(
                     return@addSnapshotListener
                 }
                 if (snapshot != null) {
-                    val exercises = snapshot.toObjects(Exercise::class.java)
+                    val exercises = snapshot
+                        .toObjects(Exercise::class.java)
                     trySend(exercises).isSuccess
                 }
             }
         awaitClose { snapshotListener.remove() }
     }
 
-    suspend fun getWorkoutById(workoutId: String): Workout? {
-        return try {
-            workoutRef.document(workoutId).get().await().toObject(Workout::class.java)
-        } catch (e: Exception) {
-            null
-        }
+    suspend fun getWorkoutById(workoutId: String) = suspendCoroutine { continuation ->
+
+        workoutRef.document(workoutId)
+            .get()
+            .addOnSuccessListener {
+                continuation
+                    .resume(it.toObject(Workout::class.java))
+
+            }.addOnFailureListener {
+                continuation.resumeWithException(it)
+            }
+
     }
 
     suspend fun updateWorkout(workout: Workout) = suspendCoroutine { continuation ->
 
-        workoutRef.document(workout.id).set(workout).addOnSuccessListener {
+        workoutRef.document(workout.id)
+            .set(workout)
+            .addOnSuccessListener {
             continuation.resume(Unit)
         }.addOnFailureListener {
 
@@ -81,8 +79,11 @@ class WorkoutRepository(
 
     suspend fun deleteWorkout(id: String) = suspendCoroutine { continuation ->
 
-        workoutRef.document(id).delete().addOnSuccessListener {
+        workoutRef.document(id)
+            .delete()
+            .addOnSuccessListener {
             continuation.resume(Unit)
+
         }.addOnFailureListener {
 
             continuation.resumeWithException(it)

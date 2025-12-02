@@ -1,6 +1,7 @@
 package com.github.guilhermebauer.lealappstestetecnico.data.repository
 
 
+import android.net.Uri
 import com.github.guilhermebauer.lealappstestetecnico.data.model.Exercise
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
@@ -11,6 +12,7 @@ import kotlinx.coroutines.tasks.await
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
+import androidx.core.net.toUri
 
 class ExerciseRepository(
     private val db: FirebaseFirestore = FirebaseFirestore.getInstance(),
@@ -35,9 +37,38 @@ class ExerciseRepository(
 
         }
 
+    suspend fun updateExercise(workoutId: String, exercise: Exercise) =
+        suspendCoroutine { continuation ->
+
+            workoutCollection.document(workoutId)
+                .collection("exercises")
+                .document(exercise.id)
+                .set(exercise)
+                .addOnSuccessListener {
+                    continuation.resume(Unit)
+                }.addOnFailureListener {
+
+                    continuation.resumeWithException(it)
+                }
+
+        }
+
+    suspend fun uploadExercisePhoto(imgPath: String) = suspendCoroutine { continuation ->
+        storage.getReference("images").child("image_${System.currentTimeMillis()}")
+            .putFile(imgPath.toUri())
+            .addOnSuccessListener { task ->
+                task.metadata?.reference?.downloadUrl?.addOnSuccessListener {
+                    continuation.resume(it)
+                }
+            }
+            .addOnFailureListener {
+                continuation.resumeWithException(it)
+            }
+    }
 
     private fun getExerciseCollectionRef(workoutId: String) =
-        db.collection("exercises").document(workoutId).collection("exercises")
+        db.collection("exercises")
+            .document(workoutId).collection("exercises")
 
 
     fun getExercisesForWorkout(workoutId: String): Flow<List<Exercise>> =
