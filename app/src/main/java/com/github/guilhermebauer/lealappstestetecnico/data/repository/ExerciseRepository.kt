@@ -86,12 +86,6 @@ class ExerciseRepository(
             awaitClose { listener.remove() }
         }
 
-    suspend fun getExerciseCollectionRef(workoutId: String) = {
-        db.collection("exercises")
-            .document(workoutId).collection("exercises")
-
-    }
-
 
 
 
