@@ -5,6 +5,7 @@ data class EditExerciseState(
     val repetitions: String = "",
     val observations: String = "",
     val imageUrl: String? = null,
+    val newImageUri: String? = null,
     val isLoadingInitialData: Boolean = true,
     val isUpdating: Boolean = false,
     val isExerciseUpdated: Boolean = false,

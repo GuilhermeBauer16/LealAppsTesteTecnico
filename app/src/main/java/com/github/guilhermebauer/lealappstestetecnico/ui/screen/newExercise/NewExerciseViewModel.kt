@@ -47,12 +47,18 @@ class NewExerciseViewModel(
 
         _state.update { it.copy(isLoading = true) }
 
-        val url = exerciseRepository.uploadExercisePhoto(_state.value.imageUri!!)
+        val imageUrl: String? = if (!_state.value.imageUri.isNullOrBlank()) {
+
+            exerciseRepository.uploadExercisePhoto(_state.value.imageUri!!).toString()
+        } else {
+
+            null
+        }
 
         val exercise = Exercise(
             name = _state.value.name,
             observations = _state.value.observations,
-            imageUrl = url.toString()
+            imageUrl = imageUrl
         )
 
         exerciseRepository.createExerciseToWorkout(workoutId, exercise)

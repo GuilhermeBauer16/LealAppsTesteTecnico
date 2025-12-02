@@ -47,6 +47,9 @@ class EditExerciseViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
             is EditExerciseAction.OnObservationsChange -> _state.update { it.copy(observations = action.observations) }
             is EditExerciseAction.UpdateExercise -> updateExercise()
             is EditExerciseAction.NavigateBack -> {}
+            is EditExerciseAction.OnImageSelected -> {
+                _state.update { it.copy(newImageUri = action.uri.toString()) }
+            }
         }
     }
 
@@ -55,11 +58,19 @@ class EditExerciseViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
 
         _state.update { it.copy(isUpdating = true) }
 
+        val finalImageUrl: String? = if (!_state.value.newImageUri.isNullOrBlank()) {
+
+            exerciseRepository.uploadExercisePhoto(_state.value.newImageUri!!).toString()
+        } else {
+
+            _state.value.imageUrl
+        }
+
         val updatedExercise = Exercise(
             id = exerciseId,
             name = _state.value.name.trim(),
             observations = _state.value.observations.trim(),
-            imageUrl = _state.value.imageUrl
+            imageUrl = finalImageUrl
         )
 
         exerciseRepository.updateExercise(workoutId, updatedExercise)
